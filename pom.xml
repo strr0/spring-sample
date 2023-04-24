@@ -11,6 +11,7 @@
     <modules>
         <module>spring-kafka-sample</module>
         <module>spring-rabbit-sample</module>
+        <module>spring-redis-sample</module>
     </modules>
 
     <properties>
