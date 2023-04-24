@@ -15,26 +15,19 @@ public class ProducerService {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public void sendDirect() {
-        rabbitTemplate.convertAndSend("hello-queue", new Foo("hello direct!"));
+    public void sendDirect(String key, String what) {
+        rabbitTemplate.convertAndSend(key, new Foo(what));
     }
 
-    public void sendFanout() {
-        rabbitTemplate.convertAndSend(RabbitFanoutConfig.FANOUTNAME, null, new Foo("hello fanout!"));
+    public void sendFanout(String what) {
+        rabbitTemplate.convertAndSend(RabbitFanoutConfig.FANOUTNAME, null, new Foo(what));
     }
 
-    public void sendTopic() {
-        rabbitTemplate.convertAndSend(RabbitTopicConfig.TOPICNAME, "topic1.aaa", new Foo("hello topic1!"));
-        rabbitTemplate.convertAndSend(RabbitTopicConfig.TOPICNAME, "topic2.bbb", new Foo("hello topic2!"));
-        rabbitTemplate.convertAndSend(RabbitTopicConfig.TOPICNAME, "topic3.ccc", new Foo("hello topic3!"));
+    public void sendTopic(String key, String what) {
+        rabbitTemplate.convertAndSend(RabbitTopicConfig.TOPICNAME, key, new Foo(what));
     }
 
-    public void sendHeader() {
-        Message nameMsg = MessageBuilder.withBody("hello header! name-queue".getBytes())
-                .setHeader("name", "strr").build();
-        Message ageMsg = MessageBuilder.withBody("hello header! age-queue".getBytes())
-                .setHeader("age", "99").build();
-        rabbitTemplate.convertAndSend(RabbitHeaderConfig.HEADERNAME, null, nameMsg);
-        rabbitTemplate.convertAndSend(RabbitHeaderConfig.HEADERNAME, null, ageMsg);
+    public void sendHeader(Message message) {
+        rabbitTemplate.convertAndSend(RabbitHeaderConfig.HEADERNAME, null, message);
     }
 }
