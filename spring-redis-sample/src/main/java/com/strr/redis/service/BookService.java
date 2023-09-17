@@ -18,4 +18,8 @@ public class BookService {
     public Book getBook(String key) {
         return redisTemplate.opsForValue().get(key);
     }
+
+    public Boolean removeBook(String key) {
+        return redisTemplate.delete(key);
+    }
 }
